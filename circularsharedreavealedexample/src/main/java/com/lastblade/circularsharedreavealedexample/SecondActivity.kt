@@ -12,22 +12,14 @@ import kotlinx.android.synthetic.main.activity_second.*
 
 class SecondActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_second)
-
-        setupEnterTransition()
-    }
-
     private fun setupEnterTransition() {
-        val imageCurvedTransition = TransitionInflater.from(this).inflateTransition(R.transition.arc_motion_transition)
-        window.sharedElementEnterTransition = imageCurvedTransition
-        imageCurvedTransition.addListener(object : Transition.TransitionListener {
+        val transition = TransitionInflater.from(this).inflateTransition(R.transition.arc_motion_transition)
+        window.sharedElementEnterTransition = transition
+        transition.addListener(object : Transition.TransitionListener {
             override fun onTransitionEnd(transition: Transition?) {
                 // Removing listener here is very important because shared element transition is
                 // executed again backwards on exit. If we don't remove the listener this code will be triggered again.
                 transition?.removeListener(this)
-                animateImageReveal()
             }
 
             override fun onTransitionResume(transition: Transition?) {
@@ -42,6 +34,13 @@ class SecondActivity : AppCompatActivity() {
             override fun onTransitionStart(transition: Transition?) {
             }
         })
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_second)
+
+        setupEnterTransition()
     }
 
     /**
